@@ -6,7 +6,8 @@ A subscription-based web application for generating withdrawal billing screensho
 
 - **User Authentication** — Register, Login, Logout with bcrypt-hashed passwords
 - **Subscription System** — Flexible day-based subscription activation with auto-expiry
-- **50+ Receipt Templates** — Mobile screenshot templates stored in database, loaded dynamically
+- **62 Receipt Templates** — Mobile screenshot templates stored in database, loaded dynamically
+- **Template Import** — Artisan command to import template data from MySQL SQL dumps
 - **Screenshot Capture** — One-click SVG/HTML capture using html2canvas with adjustable sizing
 - **Live Preview** — Real-time template preview with slider control for dimensions
 - **Admin Users Panel** — Paginated user list with subscription status indicators
@@ -37,6 +38,9 @@ touch database/database.sqlite
 php artisan migrate
 php artisan db:seed
 
+# Import template data from SQL dump
+php artisan pages:import path/to/jobspics_clone.sql
+
 # Start
 php artisan serve
 ```
@@ -59,6 +63,8 @@ Visit `http://localhost:8000`
 
 ```
 app/
+├── Console/Commands/
+│   └── ImportPages            # MySQL dump → pages table importer
 ├── Http/
 │   ├── Controllers/
 │   │   ├── Auth/          # Login, Register
