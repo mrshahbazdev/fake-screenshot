@@ -116,9 +116,7 @@
             <div class="flex-1">
                 <div class="mobile-view-wrapper bg-gray-900/50 rounded-2xl p-4 border border-white/5">
                     <div class="artboard" id="artboard">
-                        <foreignobject>
-                            {!! $pageData->data !!}
-                        </foreignobject>
+                        {!! $pageData->data !!}
                     </div>
                 </div>
             </div>
