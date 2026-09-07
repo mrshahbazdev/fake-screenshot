@@ -3,63 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Login — Quick Receipt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body {
-            background: url('https://source.unsplash.com/1600x900/?nature,water') no-repeat center center fixed;
-            background-size: cover;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: #f1f5f9; padding: 20px;
         }
-        .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .auth-card {
+            width: 100%; max-width: 420px;
+            padding: 42px 36px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(15,23,42,.08);
+            color: #1e293b;
         }
-        .login-header {
-            margin-bottom: 20px;
+        .auth-logo {
+            width: 60px; height: 60px; margin: 0 auto 18px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 14px; background: #2563eb; color: #fff; font-size: 24px;
         }
-        .form-control {
-            border-radius: 25px;
+        .auth-card h2 { text-align: center; font-weight: 700; font-size: 22px; }
+        .auth-card .sub { text-align: center; font-size: 13px; color: #64748b; margin: 6px 0 28px; }
+        .field { margin-bottom: 18px; }
+        .field label { font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 7px; text-transform: uppercase; letter-spacing: .8px; }
+        .input-wrap { position: relative; }
+        .input-wrap i.icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 14px; }
+        .input-wrap input {
+            width: 100%; padding: 13px 44px 13px 42px;
+            border-radius: 10px; border: 1px solid #cbd5e1;
+            background: #fff; color: #1e293b; font-size: 14px;
+            outline: none; transition: border .15s, box-shadow .15s;
         }
-        .btn-primary {
-            border-radius: 25px;
-            padding: 10px 20px;
+        .input-wrap input::placeholder { color: #94a3b8; }
+        .input-wrap input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+        .toggle-pass { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; cursor: pointer; font-size: 14px; }
+        .btn-submit {
+            width: 100%; padding: 13px; margin-top: 6px;
+            border: none; border-radius: 10px;
+            background: #2563eb; color: #fff;
+            font-size: 15px; font-weight: 600; letter-spacing: .4px;
+            cursor: pointer; transition: transform .12s, background .15s;
         }
-        .alert {
-            border-radius: 25px;
+        .btn-submit:hover { background: #1d4ed8; transform: translateY(-1px); }
+        .alert-error {
+            background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c;
+            padding: 11px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 18px;
         }
+        .alert-success {
+            background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d;
+            padding: 11px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 18px;
+        }
+        .switch-link { text-align: center; margin-top: 22px; font-size: 13px; color: #64748b; }
+        .switch-link a { color: #2563eb; text-decoration: none; font-weight: 600; }
+        .switch-link a:hover { text-decoration: underline; }
+        .form-text.text-danger, small { color: #dc2626 !important; font-size: 12px; }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header text-center">
-            <h2>Login</h2>
-            <p class="text-muted">Enter your credentials to access your account.</p>
-        </div>
+    <div class="auth-card">
+        <div class="auth-logo"><i class="fa fa-receipt"></i></div>
+        <h2>Welcome Back</h2>
+        <p class="sub">Sign in to Quick Receipt to continue</p>
         <?php if ($this->session->flashdata('error')): ?>
-            <div class="alert alert-danger"><?php echo $this->session->flashdata('error'); ?></div>
+            <div class="alert-error"><i class="fa fa-exclamation-circle"></i> <?php echo $this->session->flashdata('error'); ?></div>
         <?php endif; ?>
-        
+        <?php if ($this->session->flashdata('success')): ?>
+            <div class="alert-success"><i class="fa fa-check-circle"></i> <?php echo $this->session->flashdata('success'); ?></div>
+        <?php endif; ?>
         <?php echo form_open('user/do_login'); ?>
-            <div class="form-group">
+            <div class="field">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?php echo set_value('username'); ?>">
-                <?php echo form_error('username', '<small class="form-text text-danger">', '</small>'); ?>
+                <div class="input-wrap">
+                    <i class="icon fa fa-user"></i>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" value="<?php echo set_value('username'); ?>" required>
+                </div>
+                <?php echo form_error('username', '<small>', '</small>'); ?>
             </div>
-            <div class="form-group">
+            <div class="field">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                <?php echo form_error('password', '<small class="form-text text-danger">', '</small>'); ?>
+                <div class="input-wrap">
+                    <i class="icon fa fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <i class="toggle-pass fa fa-eye" onclick="togglePass(this)"></i>
+                </div>
+                <?php echo form_error('password', '<small>', '</small>'); ?>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <button type="submit" class="btn-submit"><i class="fa fa-sign-in-alt"></i>&nbsp; Sign In</button>
         <?php echo form_close(); ?>
+        <p class="switch-link">Don't have an account? <a href="<?php echo site_url('user/register'); ?>">Create one</a></p>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function togglePass(el) {
+            var input = document.getElementById('password');
+            var isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            el.classList.toggle('fa-eye');
+            el.classList.toggle('fa-eye-slash');
+        }
+    </script>
 </body>
 </html>
